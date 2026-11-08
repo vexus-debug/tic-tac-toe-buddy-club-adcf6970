@@ -32,7 +32,7 @@ describe("DlabBillingPage", () => {
         </MemoryRouter>
       </QueryClientProvider>,
     );
-    expect(screen.getAllByRole("tab").map((t) => t.textContent)).toEqual(["Invoices", "Payments & Credits"]);
+    expect(screen.getAllByRole("tab").map((t) => t.textContent)).toEqual(["Invoices", "Payments & Credits", "Case credits"]);
     expect(screen.getByText("Invoices list")).toBeInTheDocument();
     for (const l of ["Current", "31–60d", "61–90d", "90d+"]) expect(screen.getByText(l)).toBeInTheDocument();
   });
