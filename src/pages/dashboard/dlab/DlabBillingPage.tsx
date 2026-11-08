@@ -19,10 +19,12 @@ import PaymentAllocationModal from "./billing/PaymentAllocationModal";
 import { toAging } from "./billing/agingRows";
 import { applyToInvoice, clientKey } from "./dlabLinks";
 import { money } from "./dlabMoney";
+import LabCreditsPanel from "./billing/LabCreditsPanel";
 
 const TABS = [
   { value: "receivables", label: "Invoices" },
   { value: "payments", label: "Payments & Credits" },
+  { value: "wallet", label: "Case credits" },
 ];
 // Old links (?tab=aging / credits) land on the merged tab.
 const ALIAS: Record<string, string> = { aging: "receivables", credits: "payments", prices: "receivables", statements: "receivables" };
@@ -55,6 +57,7 @@ export default function DlabBillingPage() {
         <LabRegisterPage kind="credit-notes" />
         <PaymentAllocationModal open={payOpen} onOpenChange={setPayOpen} />
       </TabsContent>
+      <TabsContent value="wallet"><LabCreditsPanel /></TabsContent>
     </Tabs>
   );
 }

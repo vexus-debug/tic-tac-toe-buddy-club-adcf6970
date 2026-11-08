@@ -1,3 +1,4 @@
+import { isNoCreditsError, NO_CREDITS_MESSAGE } from "@/lib/labCredits";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "@/hooks/use-toast";
@@ -89,8 +90,11 @@ export function useCreateLabCase() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["lab_cases"] }); toast({ title: "Lab case created" }); },
-    onError: (error: any) => { toast({ title: "Error", description: error.message, variant: "destructive" }); },
+    onSuccess: () => { queryClient.invalidateQueries({ queryKey: ["lab_cases"] }); queryClient.invalidateQueries({ queryKey: ["case-wallet"] }); toast({ title: "Lab case created" }); },
+    onError: (error: any) => {
+      if (isNoCreditsError(error)) return toast({ title: "No case credits left", description: NO_CREDITS_MESSAGE, variant: "destructive" });
+      toast({ title: "Error", description: error.message, variant: "destructive" });
+    },
   });
 }
 
