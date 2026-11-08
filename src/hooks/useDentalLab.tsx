@@ -91,7 +91,9 @@ export function useCreateDentalLabCase() {
       if (error) throw error;
       return data;
     },
-    onSuccess: () => { qc.invalidateQueries({ queryKey: ["lab_cases"] }); toast({ title: "Case received" }); },
-    onError: (e: any) => toast({ title: "Could not create case", description: e.message, variant: "destructive" }),
+    onSuccess: () => { qc.invalidateQueries({ queryKey: ["lab_cases"] }); qc.invalidateQueries({ queryKey: ["case-wallet"] }); toast({ title: "Case received" }); },
+    onError: (e: any) => isNoCreditsError(e)
+      ? toast({ title: "No case credits left", description: NO_CREDITS_MESSAGE, variant: "destructive" })
+      : toast({ title: "Could not create case", description: e.message, variant: "destructive" }),
   });
 }
